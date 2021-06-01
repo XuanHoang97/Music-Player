@@ -1,7 +1,7 @@
 @import "variable.scss";
 :root {
     --primary-color: #ec1f55;
-    --text-color: #333;
+    --text-color: rgb(44, 30, 30);
 }
 
 * {
@@ -61,7 +61,7 @@ header h4 {
 }
 
 header h2 {
-    color: var(--text-color);
+    color: #3e7c2a;
     font-size: 20px;
 }
 
@@ -133,6 +133,14 @@ header h2 {
     height: 6px;
     background-color: var(--primary-color);
     cursor: pointer;
+    box-shadow: -1000px 0 0 995px #38A169;
+}
+
+.progress::-webkit-slider-runnable-track {
+    height: 7px;
+    -webkit-appearance: none;
+    color: #13bba4;
+    margin: 1px;
 }
 
 
@@ -151,11 +159,18 @@ header h2 {
     padding: 8px 16px;
     border-radius: 5px;
     box-shadow: 0 2px 3px rgba(0, 0, 0, 0.1);
+}
+
+.song:hover {
     cursor: pointer;
 }
 
 .song.active {
     background-color: var(--primary-color);
+    cursor: pointer;
+}
+
+.song.active:hover {
     cursor: pointer;
 }
 
@@ -166,7 +181,12 @@ header h2 {
 .song.active .option,
 .song.active .author,
 .song.active .title {
-    color: #fff;
+    color: #fff !important;
+}
+
+.song.active.author {
+    font-size: 12px;
+    color: white;
 }
 
 .song .thumb {
