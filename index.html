@@ -65,24 +65,27 @@
         const $$ = document.querySelectorAll.bind(document);
         const heading = $('header h2')
         const cdThumb = $('.cd-thumb')
+        const player = $('.player')
         const audio = $('#audio')
         const cd = $('.cd')
         const playBtn = $('.btn-toggle-play')
+        const progress = $('#progress')
         const app = {
             currentIndex: 0,
+            isPlaying: false,
             songs: [{
+                    name: 'Dust Till Dawn',
+                    single: 'Zayn',
+                    path: './Assets/music/DuskTillDawn.mp3',
+                    image: './Assets/img/song2.jpg',
+                }, {
                     name: 'Nevada',
                     single: 'Vicetone',
                     path: './Assets/music/song1.mp3',
                     image: './Assets/img/song1.jpg',
                 },
 
-                {
-                    name: 'Dust Till Dawn',
-                    single: 'Zayn',
-                    path: './Assets/music/song2.mp3',
-                    image: './Assets/img/song2.jpg',
-                },
+
 
                 {
                     name: 'Where is your love',
@@ -154,6 +157,7 @@
             },
 
             handleEvents: function() {
+                const _this = this
                 const cdWidth = cd.offsetWidth
 
                 // Xử lý phóng to, thu nhỏ CD
@@ -164,6 +168,45 @@
                     cd.style.width = newCdWidth > 0 ? newCdWidth + 'px' : 0
                     cd.style.opacity = newCdWidth / cdWidth
                 }
+
+                // Xử lý khi Click play
+                playBtn.onclick = function() {
+                    if (_this.isPlaying) {
+                        audio.pause()
+                    } else {
+                        audio.play()
+                    }
+
+                }
+
+                // Khi Song được Play
+                audio.onplay = function() {
+                    _this.isPlaying = true
+                    player.classList.add('playing')
+
+                }
+
+                // Khi Song bị Pause
+                audio.onpause = function() {
+                    _this.isPlaying = false
+                    player.classList.remove('playing')
+
+                }
+
+                // Khi tiến độ bài hát thay đổi
+                audio.ontimeUpdate = function() {
+                    if (audio.duration) {
+                        const progressPercent = floor(audio.currentTime / audio.duration * 100)
+                        progress.value = progressPercent
+                    }
+                }
+
+                //Xử lý khi tua Song
+                progress.onchange = function(e) {
+                    const seekTime = audio.duration / 100 * e.target.value
+                    audio.currentTime = seekTime
+                }
+
             },
 
             loadCurrentSong: function() {
