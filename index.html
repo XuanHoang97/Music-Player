@@ -72,25 +72,28 @@
         const progress = $('#progress')
         const prevBtn = $('.btn-prev')
         const nextBtn = $('.btn-next')
+        const randomBtn = $('.btn-random')
         const app = {
             currentIndex: 0,
             isPlaying: false,
-            songs: [{
-                    name: 'Chúng ta của hiện tại',
-                    single: 'Sơn Tùng MTP',
-                    path: './Assets/music/CTCHT.mp3',
-                    image: './Assets/img/CTCHT.jpg',
-                }, {
+            isRandom: false,
+            songs: [
+
+                {
                     name: 'Dust Till Dawn',
                     single: 'Zayn',
                     path: './Assets/music/DuskTillDawn.mp3',
                     image: './Assets/img/DuskTillDawn.jpg',
+                }, {
+
+                    name: 'Chúng ta của hiện tại',
+                    single: 'Sơn Tùng MTP',
+                    path: './Assets/music/CTCHT.mp3',
+                    image: './Assets/img/CTCHT.jpg',
                 },
 
-
-
                 {
-                    name: 'Where is your love',
+                    name: 'See you again',
                     single: 'None',
                     path: './Assets/music/song3.mp3',
                     image: './Assets/img/song3.jpg',
@@ -202,14 +205,37 @@
 
                 // Khi next Song
                 nextBtn.onclick = function() {
-                    _this.nextSong()
+                    if (_this.isRandom) {
+                        _this.playRandomSong()
+
+                    } else {
+                        _this.nextSong()
+                    }
+
                     audio.play()
                 }
 
                 // Khi Prev Song
                 prevBtn.onclick = function() {
-                    _this.prevSong()
+                    if (_this.isRandom) {
+                        _this.playRandomSong()
+
+                    } else {
+                        _this.prevSong()
+                    }
+
                     audio.play()
+                }
+
+                // Xử lý bật tắt random song
+                randomBtn.onclick = function(e) {
+                    _this.isRandom = !_this.isRandom
+                    randomBtn.classList.toggle('active', _this.isRandom)
+                }
+
+                // Xử lý next Song khi audio ended
+                audio.onended = function() {
+                    nextBtn.click()
                 }
 
             },
@@ -235,6 +261,17 @@
                     if (this.currentIndex < 0) {
                         this.currentIndex = this.songs.length - 1
                     }
+                this.loadCurrentSong()
+            },
+
+            playRandomSong: function() {
+                let newIndex
+                do {
+                    newIndex = Math.floor(Math.random() * this.songs.length)
+
+                } while (newIndex === this.currentIndex)
+
+                this.currentIndex = newIndex
                 this.loadCurrentSong()
             },
 
